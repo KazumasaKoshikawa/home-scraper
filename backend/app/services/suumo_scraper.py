@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+import json
 
 def scrape_property_detail(url):
     """
@@ -17,7 +18,7 @@ def scrape_property_detail(url):
         deposit_fees = get_deposit_fees(soup)
         property_data = {
             "url": url,
-            "物件コード": get_property_code(soup),
+            "SUUMO物件コード": get_property_code(soup),
             "物件名": get_property_name(soup),
             "所在地": get_address(soup),
             "賃料": get_rent(soup),
@@ -190,7 +191,7 @@ def get_deposit_fees(soup):
 
 def get_property_code(soup):
     """
-    SUUMO物件詳細ページから物件コード（管理番号）を抽出
+    SUUMO物件詳細ページからSUUMO物件コード（管理番号）を抽出
     1. <span class="property_view_note-property_id">物件コード: 123456789</span>
     2. <th class="data_01">SUUMO\n物件コード</th>の隣<td>（推奨）
     3. ページ全体テキストから「物件コード」や「管理番号」
@@ -225,7 +226,6 @@ if __name__ == "__main__":
     result = scrape_property_detail(test_url)
     print("取得結果:")
     if result:
-        for key, value in result.items():
-            print(f"{key}: {value}")
+        print(json.dumps(result, ensure_ascii=False, indent=2))
     else:
-        print("データ取得に失敗しました。")
+        print(json.dumps({"error": "データ取得に失敗しました。"}, ensure_ascii=False, indent=2))
