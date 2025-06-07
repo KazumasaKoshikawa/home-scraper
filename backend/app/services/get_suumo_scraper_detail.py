@@ -4,7 +4,7 @@ import re
 import time
 import json
 
-def scrape_property_detail(url):
+def get_suumo_scraper_detail(url):
     """
     SUUMOの物件詳細ページから情報を取得
     * suumo.jp/chintai/jnc_000... 形式のURLのみ受付可能    
@@ -16,7 +16,7 @@ def scrape_property_detail(url):
         soup = BeautifulSoup(response.content, "html.parser")
 
         deposit_fees = get_deposit_fees(soup)
-        property_data = {
+        property_data: dict = {
             "url": url,
             "SUUMO物件コード": get_property_code(soup),
             "物件名": get_property_name(soup),
@@ -220,10 +220,10 @@ def get_property_code(soup):
         return m.group(2)
     return None
 
+# FIXME テスト用
 if __name__ == "__main__":
-    # TODO テスト用: 実際の物件詳細ページURLに差し替えてください
     test_url = "https://suumo.jp/chintai/jnc_000098919464/"
-    result = scrape_property_detail(test_url)
+    result = get_suumo_scraper_detail(test_url)
     print("取得結果:")
     if result:
         print(json.dumps(result, ensure_ascii=False, indent=2))
