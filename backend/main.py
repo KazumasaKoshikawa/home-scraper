@@ -1,28 +1,71 @@
 import json
 from app.services.get_suumo_detail_urls import get_suumo_detail_urls
 from app.services.get_suumo_scraper_detail import get_suumo_scraper_detail
+from bs4 import BeautifulSoup
+import requests
+from urllib.parse import urljoin
+from tqdm import tqdm
+
+# 次ページのURLを取得する関数
+def get_next_page_url(soup, current_url):
+    """
+    BeautifulSoupオブジェクトから「次へ」リンクのURLを取得する
+    :param soup: BeautifulSoupオブジェクト
+    :param current_url: 現在のページのURL
+    :return: 次ページの絶対URL（存在しない場合はNone）
+    """
+    next_link = None
+    for a in soup.select('p.pagination-parts a'):
+        if a.text.strip() == "次へ":
+            next_link = a
+            break
+    if next_link and next_link.has_attr('href'):
+        return urljoin(current_url, next_link['href'])
+    return None
+
 
 def main():
     print("SUUMOスクレイピング開始...")
-    # 検索結果ページURL
-    # search_result_url = "https://suumo.jp/jj/chintai/ichiran/FR301FC001/?ar=030&bs=040&pc=30&smk=r01&po1=25&po2=99&shkr1=03&shkr2=03&shkr3=03&shkr4=03&sc=13101&sc=13102&sc=13103&sc=13104&sc=13105&sc=13113&ta=13&cb=7.0&ct=7.5&co=1&md=05&et=5&mb=0&mt=9999999&cn=9999999&fw2="
-    # ページネーションありURL
-    search_result_url = "https://suumo.jp/jj/chintai/ichiran/FR301FC001/?ar=030&bs=040&smk=r01&ta=13&sc=13101&sc=13102&sc=13103&sc=13104&sc=13105&sc=13113&cb=7.0&ct=8.0&mb=0&mt=9999999&md=05&et=7&cn=9999999&co=1&shkr1=03&shkr2=03&shkr3=03&shkr4=03&sngz=&po1=25&pc=10"
-    # 詳細ページURLリストを取得
-    detail_page_urls = get_suumo_detail_urls(search_result_url)
-    print(f"検索結果ページ: ページ目")
-    print(f"ページ目 詳細ページURLs: {detail_page_urls}")
-    print(f"ページ目 詳細ページ数: {len(detail_page_urls)}")
-    print(f"検索結果ページ: 合計ページ数")
+    # 最初の検索結果ページURL
+    search_target_url = "https://suumo.jp/jj/chintai/ichiran/FR301FC001/?ar=030&bs=040&smk=r01&ta=13&sc=13101&sc=13102&sc=13103&sc=13104&sc=13105&sc=13113&cb=7.0&ct=8.0&mb=0&mt=9999999&md=05&et=7&cn=9999999&co=1&shkr1=03&shkr2=03&shkr3=03&shkr4=03&sngz=&po1=25&pc=50"
+    all_detail_urls = []  # 全ページの詳細URLを格納するリスト
+    page = 1  # 現在のページ番号
+    current_url = search_target_url  # 現在処理中のページURL
 
-    scraping_results = []
-    # for unit_url in detail_page_urls:
-    #     data = get_suumo_scraper_detail(unit_url)
-    #     if data:
-    #         scraping_results.append(data)
+    # ページ送りしながら全ページ分の詳細URLを取得
+    while current_url:
+        print(f"{page}ページ目を処理中...")
+        response = requests.get(current_url)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, "html.parser")
+        # 1ページ分の詳細URLを取得
+        detail_urls = get_suumo_detail_urls(current_url)
+        all_detail_urls.extend(detail_urls)
+        print(f"{page}ページ目の物件数: {len(detail_urls)}件／合計: {len(all_detail_urls)}件")
+        # 次ページのURLを取得
+        next_url = get_next_page_url(soup, current_url)
+        if not next_url:
+            print("最終ページに到達しました")
+            break
+        current_url = next_url
+        page += 1
 
-    print(json.dumps(scraping_results, ensure_ascii=False, indent=2))
+    print(f"詳細URL合計: {len(all_detail_urls)}件")
+
+    scraping_results = []  # 物件詳細データを格納するリスト
+    # tqdmで進捗バーを表示しながら詳細ページを処理
+    for idx, unit_url in enumerate(tqdm(all_detail_urls, desc="詳細ページ処理中"), 1):
+        # 単体の詳細データを取得
+        data = get_suumo_scraper_detail(unit_url)
+        if data:
+            scraping_results.append(data)
+        # 10件ごとに進捗ログを出力
+        if idx % 10 == 0 or idx == len(all_detail_urls):
+            print(f"処理完了：{idx}件／全体: {len(all_detail_urls)}件")
+
     print("スクレイピング完了しました")
+    # スクレイピング後のデータをログ出力
+    # print(json.dumps(scraping_results, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
     main()
