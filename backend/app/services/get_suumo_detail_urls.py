@@ -14,7 +14,8 @@ def get_suumo_detail_urls(search_result_url):
         response.raise_for_status()
         soup = BeautifulSoup(response.content, "html.parser")
         detail_urls = []
-        # l-cassetteitem > li > ... > table.cassetteitem_other > tbody > tr.js-cassette_link > td:last > a.js-cassette_link_href
+        # 各物件の「詳細を見る」リンクを取得
+        # <a href="/chintai/jnc_xxxxxxxx/?bc=xxxxxxxxx&..." class="js-cassette_link_href cassetteitem_other-linktext">詳細を見る</a>
         for li in soup.select('ul.l-cassetteitem > li'):
             for tr in li.select('table.cassetteitem_other tr.js-cassette_link'):
                 a = tr.select_one('a.js-cassette_link_href')
