@@ -4,6 +4,10 @@ import os
 DB_PATH = os.path.join(os.path.dirname(__file__), 'rental_properties.sqlite3')
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), 'schema.sql')
 
+# 実行方法
+# cd local_rental_housing_scraper/backend/database
+# python3 migrate.py
+
 # --- DB初期化 ---
 def init_db():
     with open(SCHEMA_PATH, 'r', encoding='utf-8') as f:
@@ -19,6 +23,9 @@ def init_db():
 def insert_sample_data():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
+    # 既存データを全削除（トランケート相当）
+    cur.execute('DELETE FROM nearest_stations;')
+    cur.execute('DELETE FROM properties;')
     # properties テーブルにサンプル物件を追加
     cur.execute('''
         INSERT INTO properties (
@@ -46,7 +53,7 @@ def insert_sample_data():
     ''', (property_id, '西新宿駅 徒歩8分'))
     conn.commit()
     conn.close()
-    print('サンプルデータ投入完了')
+    print('サンプルデータ投入完了\n')
 
 # --- データ取得サンプル ---
 def fetch_properties():
@@ -54,12 +61,15 @@ def fetch_properties():
     cur = conn.cursor()
     cur.execute('SELECT * FROM properties')
     properties = cur.fetchall()
+    
+    print('データ取得テスト\n')
     for prop in properties:
         print('物件:', prop)
+        
         # 最寄駅も取得
         cur.execute('SELECT station_name FROM nearest_stations WHERE property_id=?', (prop[0],))
         stations = cur.fetchall()
-        print('  最寄駅:', [s[0] for s in stations])
+        print('最寄駅:', [s[0] for s in stations])
     conn.close()
 
 if __name__ == '__main__':
