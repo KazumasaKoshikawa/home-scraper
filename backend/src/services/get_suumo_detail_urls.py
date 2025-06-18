@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import src.services.constants as C
 
 def get_suumo_detail_urls(search_result_url):
     """
@@ -16,9 +17,9 @@ def get_suumo_detail_urls(search_result_url):
         detail_urls = []
         # 各物件の「詳細を見る」リンクを取得
         # <a href="/chintai/jnc_xxxxxxxx/?bc=xxxxxxxxx&..." class="js-cassette_link_href cassetteitem_other-linktext">詳細を見る</a>
-        for li in soup.select('ul.l-cassetteitem > li'):
-            for tr in li.select('table.cassetteitem_other tr.js-cassette_link'):
-                a = tr.select_one('a.js-cassette_link_href')
+        for li in soup.select(C.CASSETTEITEM_LIST_SELECTOR):
+            for tr in li.select(C.CASSETTEITEM_TR_SELECTOR):
+                a = tr.select_one(C.CASSETTEITEM_A_SELECTOR)
                 # aタグが存在し、href属性を持っている場合に処理を行う
                 if a and a.has_attr('href'):
                     href = a['href']  # href属性を取得

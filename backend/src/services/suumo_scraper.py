@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urljoin
 from tqdm import tqdm
+import src.services.constants as C
 
 def get_next_page_url(soup, current_url):
     """
@@ -14,8 +15,8 @@ def get_next_page_url(soup, current_url):
     :return: 次ページの絶対URL（存在しない場合はNone）
     """
     next_link = None
-    for a in soup.select('p.pagination-parts a'):
-        if a.text.strip() == "次へ":
+    for a in soup.select(C.PAGINATION_PARTS_SELECTOR):
+        if a.text.strip() == C.NEXT_PAGE_TEXT:
             next_link = a
             break
     if next_link and next_link.has_attr('href'):
