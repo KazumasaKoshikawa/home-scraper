@@ -1,12 +1,17 @@
 import sqlite3
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'rental_properties.sqlite3')
+DB_PATH = os.path.join(os.path.dirname(__file__), 'database.sqlite')
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), 'schema.sql')
 
 # 実行方法
 # cd local_rental_housing_scraper/backend/database
 # python3 migrate.py
+
+# --- 注意: sqlite_sequence テーブルについて ---
+# SQLite では、AUTOINCREMENT 属性を持つカラムがあるテーブルが存在すると、自動的に内部テーブル sqlite_sequence が作成されます。
+# これは各テーブルの AUTOINCREMENT カラムの最新値（シーケンス番号）を管理するためのものです。
+# このテーブルはSQLiteが自動管理しているため、手動で削除してはいけません。
 
 # --- DB初期化 ---
 def init_db():
