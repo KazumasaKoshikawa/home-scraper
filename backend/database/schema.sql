@@ -1,8 +1,8 @@
 -- 物件情報テーブル（賃貸物件の基本情報を保持）
 CREATE TABLE IF NOT EXISTS properties (
     id INTEGER PRIMARY KEY AUTOINCREMENT, -- 物件ID
-    url TEXT UNIQUE,                      -- SUUMO物件URL
-    suumo_code TEXT,                      -- SUUMO物件コード
+    url TEXT UNIQUE,                      -- SUUMO物件URL（ユニーク制約）
+    suumo_code TEXT UNIQUE,               -- SUUMO物件コード（ユニーク制約）
     name TEXT,                            -- 物件名
     address TEXT,                         -- 住所
     rent_min INTEGER,                     -- 最低賃料
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS properties (
     building_type TEXT,                   -- 建物種別
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 登録日時
     updated_at DATETIME,                  -- 更新日時
-    is_deleted INTEGER DEFAULT 0          -- 論理削除フラグ（0:有効, 1:削除）
+    is_deleted INTEGER DEFAULT 0          -- 論理削除フラグ（0:有効／1:削除）
 );
 
 -- 最寄駅情報テーブル（物件に紐づく最寄駅情報を保持）
