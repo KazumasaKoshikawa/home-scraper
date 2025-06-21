@@ -93,6 +93,20 @@ export default function App() {
     );
   };
 
+  // 検索リセット処理
+  const handleReset = () => {
+    setRentFrom("");
+    setRentTo("");
+    setLayout("");
+    setAreaFrom("");
+    setAreaTo("");
+    setBuildingType("");
+    setBuildingAgeFrom("");
+    setBuildingAgeTo("");
+    setAddress("");
+    setFiltered(properties); // 全件表示に戻す
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -103,7 +117,7 @@ export default function App() {
           <Typography variant="h1">SUUMO賃貸一覧 by KK</Typography>
         </Box>
         {/* フィルタバー（filterStateをまとめて渡す） */}
-        <FilterBar filterState={filterState} onFilter={handleFilter} />
+        <FilterBar filterState={filterState} onFilter={handleFilter} onReset={handleReset} />
         {/* 物件リスト表示 */}
         <PropertyTable properties={filtered} />
       </Container>

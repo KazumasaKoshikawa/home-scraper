@@ -6,7 +6,7 @@ import { Box, TextField, Select, MenuItem, Button } from '@mui/material';
 const layouts = ["", "1R", "1K", "1DK", "1LDK", "2DK", "2LDK", "3DK", "3LDK"];
 const buildingTypes = ["", "マンション", "アパート"];
 
-export default function FilterBar({ filterState, onFilter }) {
+export default function FilterBar({ filterState, onFilter, onReset }) {
     // filterStateから各値とsetterを分割代入
     const {
         rentFrom, setRentFrom,
@@ -47,9 +47,13 @@ export default function FilterBar({ filterState, onFilter }) {
             <TextField label="築年数(上限)" type="number" value={buildingAgeTo} onChange={e => setBuildingAgeTo(e.target.value)} size="small" sx={{ minWidth: 110 }} />
             {/* 住所・物件名キーワード */}
             <TextField label="住所/物件名キーワード" value={address} onChange={e => setAddress(e.target.value)} size="small" sx={{ minWidth: 140 }} />
-            {/* 検索ボタン（MUIアイコンを使う場合: startIcon={<SearchIcon />}） */}
+            {/* 検索ボタン */}
             <Button variant="contained" color="primary" onClick={onFilter} sx={{ minWidth: 100, borderRadius: 2 }}>
                 検索
+            </Button>
+            {/* リセットボタン */}
+            <Button variant="outlined" color="primary" onClick={onReset} sx={{ minWidth: 100, borderRadius: 2 }}>
+                リセット
             </Button>
         </Box>
     );
