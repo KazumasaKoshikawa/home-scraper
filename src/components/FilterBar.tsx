@@ -7,6 +7,7 @@ import {
   Button,
   Slider,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import { useAppContext } from "../contexts/Context.tsx";
 // MUIアイコンの例: import SearchIcon from '@mui/icons-material/Search';
@@ -148,14 +149,24 @@ export function FilterBar() {
             <Typography variant="body2">{buildingAgeRange[1]}年</Typography>
           </Box>
         </Box>
-        {/* キーワード検索 */}
-        <TextField
-          label="キーワード検索"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          size="small"
-          sx={{ minWidth: 140 }}
-        />
+        {/* キーワード検索（ツールチップ付き） */}
+        <Tooltip
+          title={
+            <>
+              <div>検索対象：物件名／住所</div>
+            </>
+          }
+          arrow
+          placement="top"
+        >
+          <TextField
+            label="キーワード検索"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            size="small"
+            sx={{ minWidth: 140 }}
+          />
+        </Tooltip>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         {/* 左側：検索・リセット */}
