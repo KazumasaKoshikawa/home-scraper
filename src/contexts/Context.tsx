@@ -5,30 +5,31 @@ import React, {
   useContext,
   ReactNode,
 } from "react";
-import { Property } from "../components/PropertyTable";
+import { Property } from "../components/HomeList";
 import { FilterState } from "../components/FilterBar";
 
-interface PropertyContextType {
+interface contextType {
   properties: Property[];
   filtered: Property[];
   setFiltered: React.Dispatch<React.SetStateAction<Property[]>>;
   filterState: FilterState;
   handleFilter: () => void;
   handleReset: () => void;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pageSize: number;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const PropertyContext = createContext<PropertyContextType | undefined>(
-  undefined
-);
+const context = createContext<contextType | undefined>(undefined);
 
-export const usePropertyContext = () => {
-  const ctx = useContext(PropertyContext);
-  if (!ctx)
-    throw new Error("usePropertyContext must be used within PropertyProvider");
+export const useAppContext = () => {
+  const ctx = React.useContext(context);
+  if (!ctx) throw new Error("useAppContext must be used within AppProvider");
   return ctx;
 };
 
-export const PropertyProvider = ({ children }: { children: ReactNode }) => {
+export const provider = ({ children }: { children: ReactNode }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [filtered, setFiltered] = useState<Property[]>([]);
   const [rentFrom, setRentFrom] = useState<string>("");
@@ -40,6 +41,8 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
   const [buildingAgeFrom, setBuildingAgeFrom] = useState<string>("");
   const [buildingAgeTo, setBuildingAgeTo] = useState<string>("");
   const [address, setAddress] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
 
   const filterState: FilterState = {
     rentFrom,
@@ -60,6 +63,8 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
     setBuildingAgeTo,
     address,
     setAddress,
+    pageSize,
+    setPageSize,
   };
 
   useEffect(() => {
@@ -98,6 +103,7 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
         return true;
       })
     );
+    setPage(1);
   };
 
   const handleReset = () => {
@@ -111,10 +117,11 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
     setBuildingAgeTo("");
     setAddress("");
     setFiltered(properties);
+    setPage(1);
   };
 
   return (
-    <PropertyContext.Provider
+    <context.Provider
       value={{
         properties,
         filtered,
@@ -122,9 +129,13 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
         filterState,
         handleFilter,
         handleReset,
+        page,
+        setPage,
+        pageSize,
+        setPageSize,
       }}
     >
       {children}
-    </PropertyContext.Provider>
+    </context.Provider>
   );
 };

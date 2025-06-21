@@ -1,13 +1,27 @@
 import React from "react";
 import { FilterBar } from "./components/FilterBar.tsx";
-import { PropertyTable } from "./components/PropertyTable.tsx";
+import { HomeList } from "./components/HomeList.tsx";
+import { Container, CssBaseline } from "@mui/material";
 
 export function App() {
   return (
     <>
-      <h1>SUUMO賃貸一覧 by KK</h1>
-      <FilterBar />
-      <PropertyTable />
+      <CssBaseline />
+      <Container
+        maxWidth={false}
+        sx={{
+          width: "90vw",
+          maxWidth: "90vw",
+          margin: "0 auto",
+          minHeight: "100vh",
+          paddingTop: 2,
+          paddingBottom: 2,
+        }}
+      >
+        <h1>SUUMO SCRAPER by KK</h1>
+        <FilterBar />
+        <HomeList />
+      </Container>
     </>
   );
 }

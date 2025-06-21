@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { App } from "./App.tsx";
-import { PropertyProvider } from "./contexts/PropertyContext.tsx";
+import { provider as AppProvider } from "./contexts/Context.tsx";
 import { reportWebVitals } from "./reportWebVitals.ts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -30,9 +30,9 @@ root.render(
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth="md" sx={{ py: 4 }}>
-        <PropertyProvider>
+        <AppProvider>
           <App />
-        </PropertyProvider>
+        </AppProvider>
       </Container>
     </ThemeProvider>
   </React.StrictMode>
