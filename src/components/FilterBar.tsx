@@ -2,20 +2,16 @@ import React from "react";
 import {
   Box,
   TextField,
-  Select,
-  MenuItem,
-  Button,
   Slider,
   Typography,
+  Button,
   Tooltip,
-  OutlinedInput,
-  InputLabel,
-  FormControl,
-  Chip,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAppContext } from "../contexts/Context.tsx";
-// MUIアイコンの例: import SearchIcon from '@mui/icons-material/Search';
+import { MultiSelectBox } from "./MultiSelectBox.tsx";
 
 export interface FilterState {
   rentRange: number[];
@@ -32,28 +28,6 @@ export interface FilterState {
   setAddress: (v: string) => void;
   pageSize: number;
   setPageSize: (v: number) => void;
-}
-
-const layouts = ["", "1R", "1K", "1DK", "1LDK", "2DK", "2LDK", "3DK", "3LDK"];
-const buildingTypes = ["", "マンション", "アパート"];
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-function getStyles(name: string, selected: readonly string[], theme: any) {
-  return {
-    fontWeight: selected.includes(name)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
 }
 
 export function FilterBar() {
@@ -88,23 +62,24 @@ export function FilterBar() {
           width: "100%",
         }}
       >
-        {/* キーワード検索（ツールチップ付き）を一番上に全幅で */}
-        <Box sx={{ width: "100%" }}>
+        {/* キーワード検索 */}
+        <Box sx={{ width: "100%", maxWidth: 480 }}>
           <Tooltip
             title={<div>検索対象：物件名／住所</div>}
             arrow
             placement="top"
+            slotProps={{ tooltip: { sx: { p: 1, fontSize: 12 } } }}
           >
             <TextField
               label="キーワード検索"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               size="small"
-              sx={{ width: "100%" }}
+              sx={{ width: "100%", maxWidth: 480 }}
             />
           </Tooltip>
         </Box>
-        {/* スライダー群を縦並びで */}
+        {/* スライダー群 */}
         <Box
           sx={{
             display: "flex",
@@ -169,95 +144,24 @@ export function FilterBar() {
             </Box>
           </Box>
         </Box>
-        {/* プルダウン2つを横並びで */}
+        {/* プルダウン2つを横並びで（MultiSelectBoxに置換） */}
         <Box sx={{ display: "flex", gap: 2, width: "100%" }}>
-          <FormControl
-            sx={{ flexGrow: 1, minWidth: 120, maxWidth: 180 }}
-            size="small"
-          >
-            <InputLabel id="layout-multi-chip-label">間取り</InputLabel>
-            <Select
-              labelId="layout-multi-chip-label"
-              id="layout-multi-chip"
-              multiple
-              value={layout}
-              onChange={(e) =>
-                setLayout(
-                  typeof e.target.value === "string"
-                    ? e.target.value.split(",")
-                    : e.target.value
-                )
-              }
-              input={
-                <OutlinedInput id="select-multiple-layout" label="間取り" />
-              }
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {(selected as string[]).map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {layouts
-                .filter((l) => l)
-                .map((l) => (
-                  <MenuItem
-                    key={l}
-                    value={l}
-                    style={getStyles(l, layout, theme)}
-                  >
-                    {l}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl
-            sx={{ flexGrow: 1, minWidth: 120, maxWidth: 180 }}
-            size="small"
-          >
-            <InputLabel id="buildingtype-multi-chip-label">建物種別</InputLabel>
-            <Select
-              labelId="buildingtype-multi-chip-label"
-              id="buildingtype-multi-chip"
-              multiple
-              value={buildingType}
-              onChange={(e) =>
-                setBuildingType(
-                  typeof e.target.value === "string"
-                    ? e.target.value.split(",")
-                    : e.target.value
-                )
-              }
-              input={
-                <OutlinedInput
-                  id="select-multiple-buildingtype"
-                  label="建物種別"
-                />
-              }
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {(selected as string[]).map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {buildingTypes
-                .filter((t) => t)
-                .map((t) => (
-                  <MenuItem
-                    key={t}
-                    value={t}
-                    style={getStyles(t, buildingType, theme)}
-                  >
-                    {t}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
+          <MultiSelectBox
+            label="間取り"
+            options={["1R", "1K", "1DK", "1LDK", "2DK", "2LDK", "3DK", "3LDK"]}
+            value={layout}
+            onChange={setLayout}
+            minWidth={180}
+            maxWidth={600}
+          />
+          <MultiSelectBox
+            label="建物種別"
+            options={["マンション", "アパート"]}
+            value={buildingType}
+            onChange={setBuildingType}
+            minWidth={180}
+            maxWidth={440}
+          />
         </Box>
       </Box>
       {/* 検索・リセット・ページング件数セレクトを下部に復元 */}
