@@ -27,7 +27,7 @@ export interface FilterState {
 const layouts = ["", "1R", "1K", "1DK", "1LDK", "2DK", "2LDK", "3DK", "3LDK"];
 const buildingTypes = ["", "マンション", "アパート"];
 
-const FilterBar: React.FC = () => {
+export function FilterBar() {
   const { filterState, handleFilter, handleReset } = usePropertyContext();
   const {
     rentFrom,
@@ -169,6 +169,4 @@ const FilterBar: React.FC = () => {
       </Button>
     </Box>
   );
-};
-
-export default FilterBar;
+}

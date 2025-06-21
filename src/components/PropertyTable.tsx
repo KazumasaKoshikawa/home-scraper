@@ -21,7 +21,7 @@ export interface Property {
   url: string;
 }
 
-const PropertyTable: React.FC = () => {
+export function PropertyTable() {
   const { filtered } = usePropertyContext();
   return (
     <List sx={{ bgcolor: "background.paper", borderRadius: 2, boxShadow: 1 }}>
@@ -68,6 +68,4 @@ const PropertyTable: React.FC = () => {
       ))}
     </List>
   );
-};
-
-export default PropertyTable;
+}

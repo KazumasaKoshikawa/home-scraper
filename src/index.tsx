@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
+import { App } from "./App.tsx";
 import { PropertyProvider } from "./contexts/PropertyContext.tsx";
-import reportWebVitals from "./reportWebVitals.ts";
+import { reportWebVitals } from "./reportWebVitals.ts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
