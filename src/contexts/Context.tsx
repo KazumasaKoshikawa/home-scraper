@@ -29,7 +29,7 @@ export const useAppContext = () => {
   return ctx;
 };
 
-export const provider = ({ children }: { children: ReactNode }) => {
+export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [filtered, setFiltered] = useState<Property[]>([]);
   const [rentFrom, setRentFrom] = useState<string>("");

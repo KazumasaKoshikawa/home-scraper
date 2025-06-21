@@ -105,7 +105,7 @@ export function HomeList() {
   return (
     <>
       <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 1 }}>
-        <Table size="small">
+        <Table size="medium">
           <TableHead>
             <TableRow>
               {columns.map((col) => (
@@ -124,7 +124,7 @@ export function HomeList() {
           </TableHead>
           <TableBody>
             {paged.map((p) => (
-              <TableRow key={p.id} hover>
+              <TableRow key={p.id} hover sx={{ minHeight: 48 }}>
                 <TableCell align="center">{p.name}</TableCell>
                 <TableCell align="center">{p.address}</TableCell>
                 <TableCell align="center">
