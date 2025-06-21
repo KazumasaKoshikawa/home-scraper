@@ -1,25 +1,27 @@
 import React from "react";
-import { Box, TextField, Select, MenuItem, Button } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  Slider,
+  Typography,
+} from "@mui/material";
 import { useAppContext } from "../contexts/Context.tsx";
 // MUIアイコンの例: import SearchIcon from '@mui/icons-material/Search';
 
 export interface FilterState {
-  rentFrom: string;
-  setRentFrom: (v: string) => void;
-  rentTo: string;
-  setRentTo: (v: string) => void;
+  rentRange: number[];
+  setRentRange: (v: number[]) => void;
   layout: string;
   setLayout: (v: string) => void;
-  areaFrom: string;
-  setAreaFrom: (v: string) => void;
-  areaTo: string;
-  setAreaTo: (v: string) => void;
+  areaRange: number[];
+  setAreaRange: (v: number[]) => void;
   buildingType: string;
   setBuildingType: (v: string) => void;
-  buildingAgeFrom: string;
-  setBuildingAgeFrom: (v: string) => void;
-  buildingAgeTo: string;
-  setBuildingAgeTo: (v: string) => void;
+  buildingAgeRange: number[];
+  setBuildingAgeRange: (v: number[]) => void;
   address: string;
   setAddress: (v: string) => void;
   pageSize: number;
@@ -32,22 +34,16 @@ const buildingTypes = ["", "マンション", "アパート"];
 export function FilterBar() {
   const { filterState, handleFilter, handleReset } = useAppContext();
   const {
-    rentFrom,
-    setRentFrom,
-    rentTo,
-    setRentTo,
+    rentRange,
+    setRentRange,
     layout,
     setLayout,
-    areaFrom,
-    setAreaFrom,
-    areaTo,
-    setAreaTo,
+    areaRange,
+    setAreaRange,
     buildingType,
     setBuildingType,
-    buildingAgeFrom,
-    setBuildingAgeFrom,
-    buildingAgeTo,
-    setBuildingAgeTo,
+    buildingAgeRange,
+    setBuildingAgeRange,
     address,
     setAddress,
     pageSize,
@@ -57,24 +53,27 @@ export function FilterBar() {
   return (
     <>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 1 }}>
-        {/* 家賃(下限) */}
-        <TextField
-          label="家賃(下限)"
-          type="number"
-          value={rentFrom}
-          onChange={(e) => setRentFrom(e.target.value)}
-          size="small"
-          sx={{ minWidth: 110 }}
-        />
-        {/* 家賃(上限) */}
-        <TextField
-          label="家賃(上限)"
-          type="number"
-          value={rentTo}
-          onChange={(e) => setRentTo(e.target.value)}
-          size="small"
-          sx={{ minWidth: 110 }}
-        />
+        {/* 家賃スライダー */}
+        <Box sx={{ width: 220 }}>
+          <Typography gutterBottom>家賃範囲（円）</Typography>
+          <Slider
+            value={rentRange}
+            onChange={(_, v) => setRentRange(v as number[])}
+            valueLabelDisplay="auto"
+            min={10000}
+            max={100000}
+            step={10000}
+            valueLabelFormat={(v) => `¥${v.toLocaleString()}`}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="body2">
+              ¥{rentRange[0].toLocaleString()}
+            </Typography>
+            <Typography variant="body2">
+              ¥{rentRange[1].toLocaleString()}
+            </Typography>
+          </Box>
+        </Box>
         {/* 間取りセレクト */}
         <Select
           value={layout}
@@ -95,24 +94,23 @@ export function FilterBar() {
               </MenuItem>
             ))}
         </Select>
-        {/* 面積(下限) */}
-        <TextField
-          label="面積(下限)"
-          type="number"
-          value={areaFrom}
-          onChange={(e) => setAreaFrom(e.target.value)}
-          size="small"
-          sx={{ minWidth: 110 }}
-        />
-        {/* 面積(上限) */}
-        <TextField
-          label="面積(上限)"
-          type="number"
-          value={areaTo}
-          onChange={(e) => setAreaTo(e.target.value)}
-          size="small"
-          sx={{ minWidth: 110 }}
-        />
+        {/* 面積スライダー */}
+        <Box sx={{ width: 180 }}>
+          <Typography gutterBottom>面積範囲（㎡）</Typography>
+          <Slider
+            value={areaRange}
+            onChange={(_, v) => setAreaRange(v as number[])}
+            valueLabelDisplay="auto"
+            min={0}
+            max={80}
+            step={1}
+            valueLabelFormat={(v) => `${v}㎡`}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="body2">{areaRange[0]}㎡</Typography>
+            <Typography variant="body2">{areaRange[1]}㎡</Typography>
+          </Box>
+        </Box>
         {/* 建物種別セレクト */}
         <Select
           value={buildingType}
@@ -133,27 +131,26 @@ export function FilterBar() {
               </MenuItem>
             ))}
         </Select>
-        {/* 築年数(下限) */}
+        {/* 築年数スライダー */}
+        <Box sx={{ width: 160 }}>
+          <Typography gutterBottom>築年数（年）</Typography>
+          <Slider
+            value={buildingAgeRange}
+            onChange={(_, v) => setBuildingAgeRange(v as number[])}
+            valueLabelDisplay="auto"
+            min={0}
+            max={100}
+            step={1}
+            valueLabelFormat={(v) => `${v}年`}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="body2">{buildingAgeRange[0]}年</Typography>
+            <Typography variant="body2">{buildingAgeRange[1]}年</Typography>
+          </Box>
+        </Box>
+        {/* キーワード検索 */}
         <TextField
-          label="築年数(下限)"
-          type="number"
-          value={buildingAgeFrom}
-          onChange={(e) => setBuildingAgeFrom(e.target.value)}
-          size="small"
-          sx={{ minWidth: 110 }}
-        />
-        {/* 築年数(上限) */}
-        <TextField
-          label="築年数(上限)"
-          type="number"
-          value={buildingAgeTo}
-          onChange={(e) => setBuildingAgeTo(e.target.value)}
-          size="small"
-          sx={{ minWidth: 110 }}
-        />
-        {/* 住所・物件名キーワード */}
-        <TextField
-          label="住所/物件名キーワード"
+          label="キーワード検索"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           size="small"

@@ -32,35 +32,26 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [filtered, setFiltered] = useState<Property[]>([]);
-  const [rentFrom, setRentFrom] = useState<string>("");
-  const [rentTo, setRentTo] = useState<string>("");
+  const [rentRange, setRentRange] = useState<number[]>([0, 500000]);
   const [layout, setLayout] = useState<string>("");
-  const [areaFrom, setAreaFrom] = useState<string>("");
-  const [areaTo, setAreaTo] = useState<string>("");
+  const [areaRange, setAreaRange] = useState<number[]>([0, 200]);
   const [buildingType, setBuildingType] = useState<string>("");
-  const [buildingAgeFrom, setBuildingAgeFrom] = useState<string>("");
-  const [buildingAgeTo, setBuildingAgeTo] = useState<string>("");
+  const [buildingAgeRange, setBuildingAgeRange] = useState<number[]>([0, 100]);
   const [address, setAddress] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
 
   const filterState: FilterState = {
-    rentFrom,
-    setRentFrom,
-    rentTo,
-    setRentTo,
+    rentRange,
+    setRentRange,
     layout,
     setLayout,
-    areaFrom,
-    setAreaFrom,
-    areaTo,
-    setAreaTo,
+    areaRange,
+    setAreaRange,
     buildingType,
     setBuildingType,
-    buildingAgeFrom,
-    setBuildingAgeFrom,
-    buildingAgeTo,
-    setBuildingAgeTo,
+    buildingAgeRange,
+    setBuildingAgeRange,
     address,
     setAddress,
     pageSize,
@@ -79,22 +70,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const handleFilter = () => {
     setFiltered(
       properties.filter((p) => {
-        const from = rentFrom ? parseInt(rentFrom, 10) : -Infinity;
-        const to = rentTo ? parseInt(rentTo, 10) : Infinity;
-        if (!(p.rent_min >= from && p.rent_max <= to)) return false;
+        // 家賃
+        if (!(p.rent_min >= rentRange[0] && p.rent_max <= rentRange[1]))
+          return false;
         if (layout && p.layout !== layout) return false;
-        const areaMin = areaFrom ? parseFloat(areaFrom) : -Infinity;
-        const areaMax = areaTo ? parseFloat(areaTo) : Infinity;
-        if (!(p.area_min >= areaMin && p.area_max <= areaMax)) return false;
+        // 面積
+        if (!(p.area_min >= areaRange[0] && p.area_max <= areaRange[1]))
+          return false;
         if (buildingType && p.building_type !== buildingType) return false;
+        // 築年数
         const getAge = (str: string) =>
           parseInt(str.replace(/[^0-9]/g, ""), 10) || 0;
         const age = getAge(p.building_age);
-        const ageFrom = buildingAgeFrom
-          ? parseInt(buildingAgeFrom, 10)
-          : -Infinity;
-        const ageTo = buildingAgeTo ? parseInt(buildingAgeTo, 10) : Infinity;
-        if (!(age >= ageFrom && age <= ageTo)) return false;
+        if (!(age >= buildingAgeRange[0] && age <= buildingAgeRange[1]))
+          return false;
         if (address) {
           const keyword = address.trim();
           if (!p.address.includes(keyword) && !p.name.includes(keyword))
@@ -107,14 +96,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleReset = () => {
-    setRentFrom("");
-    setRentTo("");
+    setRentRange([0, 500000]);
     setLayout("");
-    setAreaFrom("");
-    setAreaTo("");
+    setAreaRange([0, 200]);
     setBuildingType("");
-    setBuildingAgeFrom("");
-    setBuildingAgeTo("");
+    setBuildingAgeRange([0, 100]);
     setAddress("");
     setFiltered(properties);
     setPage(1);
