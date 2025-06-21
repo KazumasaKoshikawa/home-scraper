@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "サンプルマンションA",
+        "address": "東京都新宿区1-1-1",
+        "rent_min": 80000,
+        "rent_max": 90000,
+        "layout": "1K",
+        "area_min": 25.0,
+        "area_max": 25.0
+    },
+    {
+        "id": 2,
+        "name": "サンプルアパートB",
+        "address": "東京都渋谷区2-2-2",
+        "rent_min": 70000,
+        "rent_max": 75000,
+        "layout": "1DK",
+        "area_min": 20.0,
+        "area_max": 22.0
+    }
+]
