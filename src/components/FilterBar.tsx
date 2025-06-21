@@ -82,8 +82,11 @@ export function FilterBar() {
           displayEmpty
           size="small"
           sx={{ minWidth: 110, bgcolor: "#fff", borderRadius: 1 }}
+          renderValue={(selected) => selected || "間取り"}
         >
-          <MenuItem value="">間取り</MenuItem>
+          <MenuItem value="" disabled hidden>
+            間取り
+          </MenuItem>
           {layouts
             .filter((l) => l)
             .map((l) => (
@@ -117,8 +120,11 @@ export function FilterBar() {
           displayEmpty
           size="small"
           sx={{ minWidth: 110, bgcolor: "#fff", borderRadius: 1 }}
+          renderValue={(selected) => selected || "建物種別"}
         >
-          <MenuItem value="">建物種別</MenuItem>
+          <MenuItem value="" disabled hidden>
+            建物種別
+          </MenuItem>
           {buildingTypes
             .filter((t) => t)
             .map((t) => (
@@ -154,24 +160,27 @@ export function FilterBar() {
           sx={{ minWidth: 140 }}
         />
       </Box>
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleFilter}
-          sx={{ minWidth: 100, borderRadius: 2 }}
-        >
-          検索
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={handleReset}
-          sx={{ minWidth: 100, borderRadius: 2 }}
-        >
-          リセット
-        </Button>
-        {/* ページング件数選択 */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+        {/* 左側：検索・リセット */}
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleFilter}
+            sx={{ minWidth: 100, borderRadius: 2 }}
+          >
+            検索
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleReset}
+            sx={{ minWidth: 100, borderRadius: 2 }}
+          >
+            リセット
+          </Button>
+        </Box>
+        {/* 右側：ページング件数選択 */}
         <Select
           value={pageSize}
           onChange={(e) => setPageSize(Number(e.target.value))}

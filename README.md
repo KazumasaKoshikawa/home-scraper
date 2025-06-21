@@ -1,4 +1,24 @@
-## 技術スタック
+## ローカル確認
+
+ローカルで開発サーバーを起動して、即時に UI の変更を確認
+
+```shell
+# プロジェクトディレクトリに移動
+cd $HOME/Git/private/local_home_scraper_f
+
+# 開発サーバーを起動
+npm start
+
+# Vite を使っている場合
+npm run dev
+```
+
+起動後、ブラウザで http://localhost:3000 を開くとアプリが表示されます。
+
+コードを保存すると自動でブラウザがリロードされ、すぐに UI の変更を確認できます。
+
+ページ URL 　
+http://localhost:3000/home-scraper-frontend
 
 ## GitHub Pages
 

@@ -32,10 +32,17 @@ root.render(
     {/* MUIのテーマとCSSリセットを全体に適用する */}
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* 画面中央に配置するためのコンテナ。最大幅はmd。上下に余白を持たせている。 */}
-      <Container maxWidth="md" sx={{ py: 4 }}>
-        {/* アプリ全体の状態管理ProviderでAppをラップする */}
+      {/* 
+        画面中央に配置するためのコンテナ
+        maxWidth={false}を設定しないと、左右余白が広くなってしまう。
+      */}
+      <Container
+        maxWidth={false}
+        disableGutters
+        sx={{ py: 4, width: "95%", margin: "0 auto" }}
+      >
         <AppProvider>
+          {/* アプリケーションのメインコンポーネント */}
           <App />
         </AppProvider>
       </Container>
