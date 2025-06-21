@@ -2,9 +2,13 @@
 
 ## GitHub Pages
 
+設定画面  
 https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 
-Github Pages（gh-pages リポジトリ）へのデプロイ
+ページ URL  
+[package.json](package.json) の"homepage"参照
+
+Github Pages（gh-pages リポジトリ）へのデプロイ方法
 
 ```shell
 # デプロイ: npm run deploy
