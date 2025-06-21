@@ -4,9 +4,9 @@
 
 https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 
-gh-pages リポジトリへのデプロイ
+Github Pages（gh-pages リポジトリ）へのデプロイ
 
 ```shell
-cd $HOME/Git/private/local_home_scraper_f
-npm run deploy
+# デプロイ: npm run deploy
+cd $HOME/Git/private/local_home_scraper_f ; npm run deploy
 ```
