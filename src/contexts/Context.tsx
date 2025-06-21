@@ -33,9 +33,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [filtered, setFiltered] = useState<Property[]>([]);
   const [rentRange, setRentRange] = useState<number[]>([0, 500000]);
-  const [layout, setLayout] = useState<string>("");
+  const [layout, setLayout] = useState<string[]>([]);
   const [areaRange, setAreaRange] = useState<number[]>([0, 200]);
-  const [buildingType, setBuildingType] = useState<string>("");
+  const [buildingType, setBuildingType] = useState<string[]>([]);
   const [buildingAgeRange, setBuildingAgeRange] = useState<number[]>([0, 100]);
   const [address, setAddress] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -73,11 +73,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         // 家賃
         if (!(p.rent_min >= rentRange[0] && p.rent_max <= rentRange[1]))
           return false;
-        if (layout && p.layout !== layout) return false;
+        // 間取り（複数選択対応）
+        if (layout.length > 0 && !layout.includes(p.layout)) return false;
         // 面積
         if (!(p.area_min >= areaRange[0] && p.area_max <= areaRange[1]))
           return false;
-        if (buildingType && p.building_type !== buildingType) return false;
+        // 建物種別（複数選択対応）
+        if (buildingType.length > 0 && !buildingType.includes(p.building_type))
+          return false;
         // 築年数
         const getAge = (str: string) =>
           parseInt(str.replace(/[^0-9]/g, ""), 10) || 0;
@@ -97,9 +100,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const handleReset = () => {
     setRentRange([0, 500000]);
-    setLayout("");
+    setLayout([]);
     setAreaRange([0, 200]);
-    setBuildingType("");
+    setBuildingType([]);
     setBuildingAgeRange([0, 100]);
     setAddress("");
     setFiltered(properties);
