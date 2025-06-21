@@ -2,11 +2,38 @@ import React from "react";
 import { Box, TextField, Select, MenuItem, Button } from '@mui/material';
 // MUIアイコンの例: import SearchIcon from '@mui/icons-material/Search';
 
+export interface FilterState {
+    rentFrom: string;
+    setRentFrom: (v: string) => void;
+    rentTo: string;
+    setRentTo: (v: string) => void;
+    layout: string;
+    setLayout: (v: string) => void;
+    areaFrom: string;
+    setAreaFrom: (v: string) => void;
+    areaTo: string;
+    setAreaTo: (v: string) => void;
+    buildingType: string;
+    setBuildingType: (v: string) => void;
+    buildingAgeFrom: string;
+    setBuildingAgeFrom: (v: string) => void;
+    buildingAgeTo: string;
+    setBuildingAgeTo: (v: string) => void;
+    address: string;
+    setAddress: (v: string) => void;
+}
+
+interface FilterBarProps {
+    filterState: FilterState;
+    onFilter: () => void;
+    onReset: () => void;
+}
+
 // 間取り・建物種別の選択肢
 const layouts = ["", "1R", "1K", "1DK", "1LDK", "2DK", "2LDK", "3DK", "3LDK"];
 const buildingTypes = ["", "マンション", "アパート"];
 
-export default function FilterBar({ filterState, onFilter, onReset }) {
+const FilterBar: React.FC<FilterBarProps> = ({ filterState, onFilter, onReset }) => {
     // filterStateから各値とsetterを分割代入
     const {
         rentFrom, setRentFrom,
@@ -57,4 +84,6 @@ export default function FilterBar({ filterState, onFilter, onReset }) {
             </Button>
         </Box>
     );
-} 
+};
+
+export default FilterBar; 
