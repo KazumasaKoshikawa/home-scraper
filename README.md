@@ -30,6 +30,6 @@ https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 gh-pages リポジトリへのデプロイ
 
 ```shell
-cd ＄HOME/Git/private/local_rental_housing_scraper/frontend
+cd ＄HOME/Git/private/local_home_scraper_f/
 npm run deploy
 ```
