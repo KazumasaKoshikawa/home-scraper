@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-function App() {
+export default function App() {
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    fetch("/properties.json")
+    fetch(process.env.PUBLIC_URL + "/static_data.json")
       .then((res) => res.json())
       .then((data) => setProperties(data));
   }, []);
@@ -41,5 +41,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

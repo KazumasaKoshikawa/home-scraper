@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://KazumasaKoshikawa.github.io/frontend",
+  "homepage": "https://kazumasakoshikawa.github.io/rental-housing-scraper/",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
