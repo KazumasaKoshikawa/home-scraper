@@ -25,7 +25,7 @@ ref. [backend/requirements.txt](backend/requirements.txt)
 
 ## GitHub Pages
 
-https://github.com/KazumasaKoshikawa/home-scraper-front/settings/pages
+https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 
 gh-pages リポジトリへのデプロイ
 
