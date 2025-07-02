@@ -1,3 +1,9 @@
+# 技術スタック
+
+- **フロントエンド**: React, TypeScript, Vite, MUI (Material-UI)
+- **バックエンド**: Python, Flask, Flask-SQLAlchemy, BeautifulSoup, requests
+- **データベース**: SQLite
+
 # Frontend
 
 ## ローカル確認
@@ -37,10 +43,13 @@ cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy
 
 ### Python 使用ライブラリ
 
-ref. [backend/requirements.txt](backend/requirements.txt)
+| ライブラリ名     | 用途・説明                                        |
+| ---------------- | ------------------------------------------------- |
+| Flask            | 軽量 Web フレームワーク（API エンドポイント作成） |
+| Flask-SQLAlchemy | Flask での ORM（データベース操作の簡素化）        |
+| requests         | HTTP リクエスト送信（SUUMO サイトへのアクセス）   |
+| beautifulsoup4   | HTML 解析（物件情報の抽出）                       |
+| python-dotenv    | 環境変数管理（DB 接続情報、API キーなど）         |
 
-- requests 　… HTTP リクエスト送信（SUUMO サイトへのアクセス）
-- beautifulsoup4 　… HTML 解析（物件情報の抽出）
-- python-dotenv 　… 環境変数管理（DB 接続情報、API キーなど）
-- Flask 　… 軽量 Web フレームワーク（API エンドポイント作成）
-- Flask-SQLAlchemy 　… Flask での ORM（データベース操作の簡素化）
+バックエンドで使用する全依存ライブラリを管理するファイル  
+-> ref. [`requirements.txt`](backend/requirements.txt)
