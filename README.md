@@ -1,14 +1,12 @@
+# Frontend
+
 ## ローカル確認
 
-ローカルで開発サーバーを起動して、即時に UI の変更を確認
+ローカルで開発サーバーを起動して、即時に UI の変更を確認する方法
 
 ```shell
-# プロジェクトディレクトリに移動
-cd $HOME/Git/private/local_home_scraper_f
-
-# 開発サーバーを起動
-npm start
-
+# ローカル起動: npm start
+cd $HOME/Git/private/local_home_scraper/frontend ; npm start
 # Vite を使っている場合
 npm run dev
 ```
@@ -26,11 +24,23 @@ http://localhost:3000/home-scraper-frontend
 https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 
 ページ URL  
-[package.json](package.json) の"homepage"参照
+[package.json](package.json) の"homepage"キー参照
 
 Github Pages（gh-pages リポジトリ）へのデプロイ方法
 
 ```shell
 # デプロイ: npm run deploy
-cd $HOME/Git/private/local_home_scraper_f ; npm run deploy
+cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy
 ```
+
+# Backend
+
+### Python 使用ライブラリ
+
+ref. [backend/requirements.txt](backend/requirements.txt)
+
+- requests 　… HTTP リクエスト送信（SUUMO サイトへのアクセス）
+- beautifulsoup4 　… HTML 解析（物件情報の抽出）
+- python-dotenv 　… 環境変数管理（DB 接続情報、API キーなど）
+- Flask 　… 軽量 Web フレームワーク（API エンドポイント作成）
+- Flask-SQLAlchemy 　… Flask での ORM（データベース操作の簡素化）
