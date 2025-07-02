@@ -25,18 +25,9 @@ TODO:
 ローカルで開発サーバーを起動して、即時に UI の変更を確認する方法
 
 ```shell
-# ローカル起動: npm start
-cd $HOME/Git/private/local_home_scraper/frontend ; npm start
-# Vite を使っている場合
-npm run dev
+# ローカル起動（Vite）
+cd $HOME/Git/private/local_home_scraper/frontend ; npx vite
 ```
-
-起動後、ブラウザで http://localhost:3000 を開くとアプリが表示されます。
-
-コードを保存すると自動でブラウザがリロードされ、すぐに UI の変更を確認できます。
-
-ページ URL 　
-http://localhost:3000/home-scraper-frontend
 
 ## GitHub Pages
 
@@ -46,11 +37,18 @@ https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 ページ URL  
 [package.json](package.json) の"homepage"キー参照
 
-Github Pages（gh-pages リポジトリ）へのデプロイ方法
+### Github Pages（gh-pages リポジトリ）へのデプロイ方法
 
 ```shell
-# デプロイ: npm run deploy
-cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy
+# ビルド
+cd $HOME/Git/private/local_home_scraper/frontend ; npx vite build
+  -> ビルド成果物は `frontend/dist` ディレクトリに出力される
+
+# デプロイ（package.json に定義しているコマンド）
+cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy:github-pages
+  -> コマンド内部の流れ：
+     1. Viteで本番ビルド（dist/ディレクトリ生成）
+     2. gh-pagesパッケージでdist/配下をgh-pagesブランチに自動デプロイ（GitHub Pagesで公開される）
 ```
 
 # Backend

@@ -1,3 +1,6 @@
+// Viteの型定義をインポート
+/// <reference types="vite/client" />
+
 import React, {
   useEffect,
   useState,
@@ -7,6 +10,7 @@ import React, {
 } from "react";
 import { Property } from "../components/HomeList";
 import { FilterState } from "../components/FilterBar";
+// Viteの型定義をインポートしてimport.meta.envの型エラーを防ぐ
 
 interface contextType {
   properties: Property[];
@@ -59,7 +63,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    fetch(process.env.PUBLIC_URL + "/static_data.json")
+    // TODO 静的データ読み込み
+    // Viteのbase設定に応じて正しいパスでstatic_data.jsonを取得するため、
+    // import.meta.env.BASE_URLを使うことでローカル・本番どちらでも動作します。
+    fetch(import.meta.env.BASE_URL + "static_data.json")
       .then((res) => res.json())
       .then((data: Property[]) => {
         setProperties(data);
