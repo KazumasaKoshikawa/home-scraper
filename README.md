@@ -53,6 +53,16 @@ cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy:github-pages
 
 # Backend
 
+### スクレイピング実行
+
+実行コマンド例
+
+```sh
+cd $HOME/Git/private/local_home_scraper/backend ; python3 main.py
+```
+
+/Users/kk_mac/Git/private/local_home_scraper/backend/src/services/suumo_scraper.py
+
 ### Python 使用ライブラリ
 
 | ライブラリ名     | 用途・説明                                        |

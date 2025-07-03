@@ -6,6 +6,7 @@ import requests
 from urllib.parse import urljoin
 from tqdm import tqdm
 import src.services.constants as C
+import os
 
 def get_next_page_url(soup, current_url):
     """
@@ -64,4 +65,12 @@ def run_suumo_scraping(search_target_url):
     print("スクレイピング完了しました")
     # スクレイピング後のデータをログ出力
     # FIXME 最初の2件を出力   
-    print(json.dumps(scraping_results[:2], ensure_ascii=False, indent=2)) 
+    # print(json.dumps(scraping_results[:2], ensure_ascii=False, indent=2))
+
+    # FIXME 結果をstatic_data.jsonとして保存
+    output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'database')
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, 'static_data.json')
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(scraping_results, f, ensure_ascii=False, indent=2)
+    print(f"スクレイピング結果を {output_path} に保存しました") 
