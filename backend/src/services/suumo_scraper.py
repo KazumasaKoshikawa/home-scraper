@@ -68,9 +68,11 @@ def run_suumo_scraping(search_target_url):
     # print(json.dumps(scraping_results[:2], ensure_ascii=False, indent=2))
 
     # FIXME 結果をstatic_data.jsonとして保存
-    output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'database')
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, 'static_data.json')
+    # 保存先：frontend/dist/static_data.json
+    frontend_dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'dist')
+    os.makedirs(frontend_dist_dir, exist_ok=True)
+    output_path = os.path.join(frontend_dist_dir, 'static_data.json')
+    
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(scraping_results, f, ensure_ascii=False, indent=2)
-    print(f"スクレイピング結果を {output_path} に保存しました") 
+    print(f"スクレイピング結果を {output_path} に保存しました")

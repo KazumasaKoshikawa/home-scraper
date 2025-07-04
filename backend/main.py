@@ -1,10 +1,11 @@
-from src.services.suumo_scraper import run_suumo_scraping
-import src.services.constants as C
+"""
+この main.py は、使用されていません。
+現在は src/services/suumo_scraper.py を -m オプションで直接実行する運用が推奨されています。
+
+"""
 
 def main():
-    # 実行コマンド：python3 $HOME/Git/private/local_rental_housing_scraper/backend/main.py
-    search_target_url = C.DEFAULT_SEARCH_URL
-    run_suumo_scraping(search_target_url)
+    print("処理本体はありません")
 
 if __name__ == "__main__":
     main()

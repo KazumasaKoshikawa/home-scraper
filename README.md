@@ -58,7 +58,7 @@ cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy:github-pages
 実行コマンド例
 
 ```sh
-cd $HOME/Git/private/local_home_scraper/backend ; python3 main.py
+cd $HOME/Git/private/local_home_scraper/backend ; && python3 -m src.services.suumo_scraper
 ```
 
 /Users/kk_mac/Git/private/local_home_scraper/backend/src/services/suumo_scraper.py
