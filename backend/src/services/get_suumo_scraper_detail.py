@@ -44,7 +44,7 @@ def get_suumo_scraper_detail(page_url):
 
 def _extract_property_name(soup):
     """Extract property name (h1.section_h1-header-title)"""
-    elem = soup.find(C.PROPERTY_NAME_SELECTOR)
+    elem = soup.select_one(C.PROPERTY_NAME_SELECTOR)
     return elem.text.strip() if elem else None
 
 def _extract_address(soup):
