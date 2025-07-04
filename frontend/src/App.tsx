@@ -1,6 +1,6 @@
 import React from "react";
-import { FilterBar } from "./components/FilterBar.tsx";
-import { HomeList } from "./components/HomeList.tsx";
+import { Filter } from "./components/Filter.tsx";
+import { List } from "./components/List.tsx";
 import { CssBaseline } from "@mui/material";
 
 // アプリケーションのメインコンポーネント
@@ -12,9 +12,9 @@ export function App() {
       {/* タイトル表示 */}
       <h1>SUUMO SCRAPER by KK</h1>
       {/* フィルタバーを表示する。物件の絞り込みができる。 */}
-      <FilterBar />
+      <Filter />
       {/* 物件リストをテーブル形式で表示する。 */}
-      <HomeList />
+      <List />
     </>
   );
 }

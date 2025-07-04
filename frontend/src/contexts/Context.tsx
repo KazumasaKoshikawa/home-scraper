@@ -8,8 +8,8 @@ import React, {
   useContext,
   ReactNode,
 } from "react";
-import { Property } from "../components/HomeList";
-import { FilterState } from "../components/FilterBar";
+import { Property } from "../components/List";
+import { FilterState } from "../components/Filter";
 // Viteの型定義をインポートしてimport.meta.envの型エラーを防ぐ
 
 interface contextType {

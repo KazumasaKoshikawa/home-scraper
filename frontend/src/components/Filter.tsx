@@ -30,7 +30,7 @@ export interface FilterState {
   setPageSize: (v: number) => void;
 }
 
-export function FilterBar() {
+export function Filter() {
   const { filterState, handleFilter, handleReset } = useAppContext();
   const {
     rentRange,

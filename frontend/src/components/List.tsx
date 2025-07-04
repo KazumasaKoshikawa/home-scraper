@@ -12,6 +12,7 @@ import {
   Pagination,
 } from "@mui/material";
 import { useAppContext } from "../contexts/Context.tsx";
+import { parsePrice } from "../utils/parsePrice.ts";
 // MUIアイコンの例: import HomeIcon from '@mui/icons-material/Home';
 
 export interface Property {
@@ -84,7 +85,7 @@ function getComparator(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function HomeList() {
+export function List() {
   const { filtered, page, setPage, pageSize } = useAppContext();
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<SortKey>("rent_min");
@@ -127,12 +128,8 @@ export function HomeList() {
               <TableRow key={p.id} hover sx={{ minHeight: 48 }}>
                 <TableCell align="center">{p.name}</TableCell>
                 <TableCell align="center">{p.address}</TableCell>
-                <TableCell align="center">
-                  {p.rent_min.toLocaleString()}
-                </TableCell>
-                <TableCell align="center">
-                  {p.rent_max.toLocaleString()}
-                </TableCell>
+                <TableCell align="center">{parsePrice(p.rent_min)}</TableCell>
+                <TableCell align="center">{parsePrice(p.rent_max)}</TableCell>
                 <TableCell align="center">{p.layout}</TableCell>
                 <TableCell align="center">{p.area_min}</TableCell>
                 <TableCell align="center">{p.area_max}</TableCell>
@@ -140,14 +137,10 @@ export function HomeList() {
                 <TableCell align="center">{p.building_age}</TableCell>
                 <TableCell align="center">{p.floor}</TableCell>
                 <TableCell align="center">
-                  {p.admin_fee_min ? p.admin_fee_min.toLocaleString() : 0}
+                  {parsePrice(p.admin_fee_min)}
                 </TableCell>
-                <TableCell align="center">
-                  {p.deposit ? p.deposit.toLocaleString() : 0}
-                </TableCell>
-                <TableCell align="center">
-                  {p.key_money ? p.key_money.toLocaleString() : 0}
-                </TableCell>
+                <TableCell align="center">{parsePrice(p.deposit)}</TableCell>
+                <TableCell align="center">{parsePrice(p.key_money)}</TableCell>
                 <TableCell align="center">
                   <Link
                     href={p.url}
