@@ -67,12 +67,29 @@ def run_suumo_scraping(search_target_url):
     # FIXME 最初の2件を出力   
     # print(json.dumps(scraping_results[:2], ensure_ascii=False, indent=2))
 
-    # FIXME 結果をstatic_data.jsonとして保存
-    # 保存先：frontend/dist/static_data.json
-    frontend_dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'frontend', 'dist')
-    os.makedirs(frontend_dist_dir, exist_ok=True)
-    output_path = os.path.join(frontend_dist_dir, 'static_data.json')
-    
+    # FIXME 結果をFrontディレクトリに保存
+    # 保存先：frontend/public/static_data.json に変更（プロジェクトルート基準で解決）
+    # プロジェクトルート（local_home_scraper）を絶対パスで取得
+    abs_path = os.path.abspath(__file__)
+    parts = abs_path.split(os.sep)
+    if 'local_home_scraper' in parts:
+        idx = parts.index('local_home_scraper')
+        project_root = os.sep.join(parts[:idx+1])
+    else:
+        raise RuntimeError('local_home_scraper ディレクトリがパスに見つかりません')
+    frontend_public_dir = os.path.join(project_root, 'frontend', 'public')
+    os.makedirs(frontend_public_dir, exist_ok=True)
+    output_path = os.path.join(frontend_public_dir, 'static_data.json')
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(scraping_results, f, ensure_ascii=False, indent=2)
     print(f"スクレイピング結果を {output_path} に保存しました")
+
+def main():
+    """
+    エントリーポイント
+    """
+    print("run suumo_scraper.py")
+    search_target_url = C.DEFAULT_SEARCH_URL
+    run_suumo_scraping(search_target_url)
+if __name__ == "__main__":
+    main()
