@@ -56,11 +56,9 @@ type SortKey = keyof Pick<
 const columns: { key: SortKey; label: string }[] = [
   { key: "name", label: "物件名" },
   { key: "address", label: "住所" },
-  { key: "rent_min", label: "家賃(下限)" },
-  { key: "rent_max", label: "家賃(上限)" },
+  { key: "rent_min", label: "家賃" },
   { key: "layout", label: "間取り" },
-  { key: "area_min", label: "面積(下限)" },
-  { key: "area_max", label: "面積(上限)" },
+  { key: "area_min", label: "面積" },
   { key: "building_type", label: "建物種別" },
   { key: "building_age", label: "築年数" },
   { key: "floor", label: "階数" },
@@ -104,6 +102,22 @@ export function List() {
   const paged = sorted.slice(startIdx, endIdx);
   const pageCount = Math.ceil(sorted.length / pageSize);
 
+  const rightAlignKeys = [
+    "rent_min",
+    "area_min",
+    "admin_fee_min",
+    "deposit",
+    "key_money",
+  ];
+  const leftAlignKeys = [
+    "name",
+    "address",
+    "layout",
+    "building_type",
+    "building_age",
+    "floor",
+  ];
+
   return (
     <>
       <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 1 }}>
@@ -111,7 +125,16 @@ export function List() {
           <TableHead>
             <TableRow>
               {columns.map((col) => (
-                <TableCell key={col.key} align="center">
+                <TableCell
+                  key={col.key}
+                  align={
+                    rightAlignKeys.includes(col.key)
+                      ? "right"
+                      : leftAlignKeys.includes(col.key)
+                      ? "left"
+                      : "center"
+                  }
+                >
                   <TableSortLabel
                     active={orderBy === col.key}
                     direction={orderBy === col.key ? order : "asc"}
@@ -121,50 +144,44 @@ export function List() {
                   </TableSortLabel>
                 </TableCell>
               ))}
-              <TableCell align="center">最寄駅</TableCell>
-              <TableCell align="center">SUUMO</TableCell>
+              <TableCell align="left">最寄駅</TableCell>
+              <TableCell align="left">SUUMO</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paged.map((p) => (
               <TableRow key={p.id} hover sx={{ minHeight: 48 }}>
-                <TableCell align="center">
+                <TableCell align="left">
                   {p.name && p.name !== "-" ? p.name : "(名称なし)"}
                 </TableCell>
-                <TableCell align="center">{p.address}</TableCell>
-                <TableCell align="center">
+                <TableCell align="left">{p.address}</TableCell>
+                <TableCell align="right">
                   {p.rent_min !== undefined ? parsePrice(p.rent_min) : "-"}
                 </TableCell>
-                <TableCell align="center">
-                  {p.rent_max !== undefined ? parsePrice(p.rent_max) : "-"}
-                </TableCell>
-                <TableCell align="center">{p.layout}</TableCell>
-                <TableCell align="center">
+                <TableCell align="left">{p.layout}</TableCell>
+                <TableCell align="right">
                   {p.area_min !== undefined ? p.area_min : "-"}
                 </TableCell>
-                <TableCell align="center">
-                  {p.area_max !== undefined ? p.area_max : "-"}
-                </TableCell>
-                <TableCell align="center">{p.building_type}</TableCell>
-                <TableCell align="center">{p.building_age}</TableCell>
-                <TableCell align="center">{p.floor}</TableCell>
-                <TableCell align="center">
+                <TableCell align="left">{p.building_type}</TableCell>
+                <TableCell align="left">{p.building_age}</TableCell>
+                <TableCell align="left">{p.floor}</TableCell>
+                <TableCell align="right">
                   {p.admin_fee_min !== undefined
                     ? parsePrice(p.admin_fee_min)
                     : "-"}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="right">
                   {p.deposit !== undefined ? parsePrice(p.deposit) : "-"}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="right">
                   {p.key_money !== undefined ? parsePrice(p.key_money) : "-"}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   {p.stations && p.stations.length > 0
                     ? p.stations.join(" / ")
                     : "-"}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   <Link
                     href={p.url}
                     target="_blank"
