@@ -33,6 +33,46 @@ export const useAppContext = () => {
   return ctx;
 };
 
+// JSON→Property型変換用
+function mapJsonToProperty(item: any, idx: number): Property {
+  // 金額系のパース関数
+  const parseYen = (v: string | null) => {
+    if (!v || v === "-" || v === null) return undefined;
+    // 例: "8万円" → 80000, "2000円" → 2000
+    if (v.includes("万円")) return parseFloat(v.replace("万円", "")) * 10000;
+    if (v.includes("円")) return parseFloat(v.replace("円", ""));
+    return Number(v) || undefined;
+  };
+  // 面積
+  const parseArea = (v: string | null) => {
+    if (!v || v === "-" || v === null) return undefined;
+    return parseFloat(v.replace("m2", ""));
+  };
+  // 築年数
+  const parseAge = (v: string | null) => v || "-";
+  // 階
+  const parseFloor = (v: string | null) => v || "-";
+
+  return {
+    id: idx + 1,
+    name: item["物件名"] ?? "-",
+    address: item["所在地"] ?? "-",
+    rent_min: parseYen(item["賃料"]),
+    rent_max: parseYen(item["賃料"]), // 上限下限区別不可のため同値
+    layout: item["間取り"] ?? "-",
+    area_min: parseArea(item["専有面積"]),
+    area_max: parseArea(item["専有面積"]),
+    building_type: item["建物種別"] ?? "-",
+    building_age: parseAge(item["築年数"]),
+    floor: parseFloor(item["階"]),
+    admin_fee_min: parseYen(item["管理費・共益費"]),
+    deposit: parseYen(item["敷金"]),
+    key_money: parseYen(item["礼金"]),
+    url: item["url"] ?? "#",
+    stations: Array.isArray(item["最寄駅"]) ? item["最寄駅"] : [],
+  };
+}
+
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [filtered, setFiltered] = useState<Property[]>([]);
@@ -68,9 +108,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // import.meta.env.BASE_URLを使うことでローカル・本番どちらでも動作します。
     fetch(import.meta.env.BASE_URL + "static_data.json")
       .then((res) => res.json())
-      .then((data: Property[]) => {
-        setProperties(data);
-        setFiltered(data);
+      .then((data: any[]) => {
+        const mapped = data.map(mapJsonToProperty);
+        setProperties(mapped);
+        setFiltered(mapped);
       });
   }, []);
 
@@ -78,12 +119,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setFiltered(
       properties.filter((p) => {
         // 家賃
-        if (!(p.rent_min >= rentRange[0] && p.rent_max <= rentRange[1]))
+        if (
+          p.rent_min === undefined ||
+          p.rent_max === undefined ||
+          !(p.rent_min >= rentRange[0] && p.rent_max <= rentRange[1])
+        )
           return false;
         // 間取り（複数選択対応）
         if (layout.length > 0 && !layout.includes(p.layout)) return false;
         // 面積
-        if (!(p.area_min >= areaRange[0] && p.area_max <= areaRange[1]))
+        if (
+          p.area_min === undefined ||
+          p.area_max === undefined ||
+          !(p.area_min >= areaRange[0] && p.area_max <= areaRange[1])
+        )
           return false;
         // 建物種別（複数選択対応）
         if (buildingType.length > 0 && !buildingType.includes(p.building_type))

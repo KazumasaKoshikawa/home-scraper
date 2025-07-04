@@ -19,11 +19,11 @@ export interface Property {
   id: number;
   name: string;
   address: string;
-  rent_min: number;
-  rent_max: number;
+  rent_min: number | undefined;
+  rent_max: number | undefined;
   layout: string;
-  area_min: number;
-  area_max: number;
+  area_min: number | undefined;
+  area_max: number | undefined;
   building_type: string;
   building_age: string;
   floor: string;
@@ -31,6 +31,7 @@ export interface Property {
   deposit?: number;
   key_money?: number;
   url: string;
+  stations?: string[];
 }
 
 type Order = "asc" | "desc";
@@ -120,27 +121,49 @@ export function List() {
                   </TableSortLabel>
                 </TableCell>
               ))}
+              <TableCell align="center">最寄駅</TableCell>
               <TableCell align="center">SUUMO</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paged.map((p) => (
               <TableRow key={p.id} hover sx={{ minHeight: 48 }}>
-                <TableCell align="center">{p.name}</TableCell>
+                <TableCell align="center">
+                  {p.name && p.name !== "-" ? p.name : "(名称なし)"}
+                </TableCell>
                 <TableCell align="center">{p.address}</TableCell>
-                <TableCell align="center">{parsePrice(p.rent_min)}</TableCell>
-                <TableCell align="center">{parsePrice(p.rent_max)}</TableCell>
+                <TableCell align="center">
+                  {p.rent_min !== undefined ? parsePrice(p.rent_min) : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {p.rent_max !== undefined ? parsePrice(p.rent_max) : "-"}
+                </TableCell>
                 <TableCell align="center">{p.layout}</TableCell>
-                <TableCell align="center">{p.area_min}</TableCell>
-                <TableCell align="center">{p.area_max}</TableCell>
+                <TableCell align="center">
+                  {p.area_min !== undefined ? p.area_min : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {p.area_max !== undefined ? p.area_max : "-"}
+                </TableCell>
                 <TableCell align="center">{p.building_type}</TableCell>
                 <TableCell align="center">{p.building_age}</TableCell>
                 <TableCell align="center">{p.floor}</TableCell>
                 <TableCell align="center">
-                  {parsePrice(p.admin_fee_min)}
+                  {p.admin_fee_min !== undefined
+                    ? parsePrice(p.admin_fee_min)
+                    : "-"}
                 </TableCell>
-                <TableCell align="center">{parsePrice(p.deposit)}</TableCell>
-                <TableCell align="center">{parsePrice(p.key_money)}</TableCell>
+                <TableCell align="center">
+                  {p.deposit !== undefined ? parsePrice(p.deposit) : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {p.key_money !== undefined ? parsePrice(p.key_money) : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {p.stations && p.stations.length > 0
+                    ? p.stations.join(" / ")
+                    : "-"}
+                </TableCell>
                 <TableCell align="center">
                   <Link
                     href={p.url}
