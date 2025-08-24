@@ -26,7 +26,7 @@ TODO:
 
 ```shell
 # ローカル起動（Vite）
-cd $HOME/Git/private/local_home_scraper/frontend ; npx vite
+cd $HOME/git/private/local_home_scraper/frontend ; npx vite
 ```
 
 ## GitHub Pages
@@ -41,11 +41,11 @@ https://github.com/KazumasaKoshikawa/home-scraper-frontend/settings/pages
 
 ```shell
 # ビルド
-cd $HOME/Git/private/local_home_scraper/frontend ; npx vite build
+cd $HOME/git/private/local_home_scraper/frontend ; npx vite build
   -> ビルド成果物は `frontend/dist` ディレクトリに出力される
 
 # デプロイ（package.json に定義しているコマンド）
-cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy:github-pages
+cd $HOME/git/private/local_home_scraper/frontend ; npm run deploy:github-pages
   -> コマンド内部の流れ：
      1. Viteで本番ビルド（dist/ディレクトリ生成）
      2. gh-pagesパッケージでdist/配下をgh-pagesブランチに自動デプロイ（GitHub Pagesで公開される）
@@ -58,7 +58,7 @@ cd $HOME/Git/private/local_home_scraper/frontend ; npm run deploy:github-pages
 実行コマンド例
 
 ```sh
-cd $HOME/Git/private/local_home_scraper/backend ; python3 -m src.services.suumo_scraper
+cd $HOME/git/private/local_home_scraper/backend ; python3 -m src.services.suumo_scraper
 ```
 
 ### Python 使用ライブラリ
