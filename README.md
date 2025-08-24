@@ -1,3 +1,6 @@
+> [!NOTE]  
+> https://github.com/KazumasaKoshikawa/home-scraper
+
 # リポジトリが public の理由
 
 本リポジトリは、GitHub Pages による Web サイト公開（静的フロントエンドのホスティング）を目的としているため、**public（公開）設定**としています。
